@@ -9,17 +9,22 @@
     </div>
     {% for movie in movies %}
         <div class ="col-lg-3 col-md-6 mb-4">
-        <div class ="card h-100">
-            <div class ="card-header text-center border">
-                <h4 class = "card-title">Tytuł filmu</h4>
-            </div>
-            <img class="card-img-top border" src="http://placehold.it/300x500" alt="">
-            <div class = "card-body border">
-                <p class = "card-text">Opis filmu</h4>
-            </div>
-            <div class = "card-footer text-center border">
-                <a href = "#" class = "btn btn-primary btn-block">Pokaż więcej</a>
-            </div>
+            <div class ="card h-100">
+                <div class ="card-header text-center border bg-primary h-25">
+                    <h4 class = "card-title text-light ">{{ movie['title'] }}</h4>
+                </div>
+                <img class="card-img-top border" src="{{ tmdb_image_url(movie.poster_path,'w780')}}" alt="">
+                <div class = "card-body border">
+                    <button class="btn btn-primary btn-block" data-bs-toggle="collapse" data-bs-target="#description" aria-bs-expanded="false" aria-bs-controls="description">
+                        Opis filmu
+                    </button>
+                    <div class="collapse" id="description">
+                        <p class = "card-text text-justify">{{ movie['overview'] }}</p>
+                    </div>
+                </div>
+                <div class = "card-footer text-center border">
+                    <a href = "#" class = "btn btn-primary btn-block">Pokaż więcej</a>
+                </div>
         </div>
     </div>
     {% endfor %}
