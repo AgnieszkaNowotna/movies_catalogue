@@ -14,7 +14,6 @@ def movie_details(movie_id):
     details = tmdb_client.get_single_movie(movie_id)
     cast = tmdb_client.get_single_movie_cast(movie_id)
     image = tmdb_client.get_random_movie_image(movie_id)
-    print(type(details))
     return render_template("movie_details.html", movie = details, cast=cast, image=image)
 
 @app.context_processor
