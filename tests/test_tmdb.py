@@ -1,6 +1,20 @@
 from unittest.mock import Mock
 from tmdb_client import *
 
+def test_call_tmdb_api_endpoint(monkeypatch):
+    movie_id = 1
+    endpoint = f'movie/{movie_id}'
+    mock_url = f'https://api.themoviedb.org/3/{endpoint}'
+    required_url = f'https://api.themoviedb.org/3/movie/1'
+    
+    mock_request = Mock()
+    response = mock_request.return_value
+    response.json.return_value = mock_url
+    monkeypatch.setattr('tmdb_client.requests.get', mock_request)
+    
+    result = call_tmdb_api(endpoint)
+    assert required_url == result
+
 def test_get_single_movie(monkeypatch):
     mock_movie_details = {'a':'1'}
     
