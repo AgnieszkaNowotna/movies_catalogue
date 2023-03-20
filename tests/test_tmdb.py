@@ -23,11 +23,11 @@ def test_get_single_movie_images(monkeypatch):
     assert type(result) is list
     
 def test_get_single_movie_cast(monkeypatch):
-    mock_cast = ['Actor_1','Actor_2','Actor_3']
+    mock_cast = {'cast':['Actor_1','Actor_2','Actor_3']}
     mock = Mock()
     mock.return_value = mock_cast
     monkeypatch.setattr("tmdb_client.call_tmdb_api", mock)
 
     result = get_single_movie_cast(movie_id = 1)
-    assert mock_cast == result
+    assert mock_cast['cast'] == result
 
