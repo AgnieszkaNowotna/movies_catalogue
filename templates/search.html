@@ -1,34 +1,25 @@
 {% extends "index.html" %}
 
 {% block content %}
-
-<div class = "row mb-5">
-    <div class="col-lg-12 text-center">
-        <h1 class="mt-5">Welcome to movies library</h1>
-        <p class = "lead">Only best titles</p>
-    </div>
-    <div>
-        {% for movie_type in movie_types %}
-        {% if movie_type != selected_list %}
-        <button type = "button" class = "btn btn-outline-primary">
-            <a href="{{url_for('homepage', list_type = movie_type)}}">{{ movie_type.capitalize()|replace("_"," ") }}</a>
-        </button>
-        {% else %}
-        <button type = "button" class = "btn btn-dark">
-            <a class = "text-white" href="{{url_for('homepage', list_type = movie_type)}}">{{ movie_type.capitalize()|replace("_"," ") }}</a>
-        </button>
-        {% endif %}
-        {% endfor %}
+<div class = "row my-5">
+    <div class="col-12 text-center">
+        <h2>Search results for "{{ search_query }}"</h2>
     </div>
 </div>
 <div class = "row">
-    {% for movie in movies %}
+    {% for movie in search_list %}
         <div class ="col-lg-3 col-md-6 mb-4">
             <div class ="card h-100">
                 <div class ="card-header border bg-primary h-25">
                     <h4 class = "card-title text-light text-center">{{ movie.title }}</h4>
                 </div>
-                <img class="card-img-top border" src="{{ tmdb_image_url(movie.poster_path,'w342')}}" alt="">
+                <div style="height:400px;">
+                {% if movie.poster_path == none %}
+                    <img src="https://placehold.it/324x486?text={{ movie.title }}" class="figure-img img-fluid rounded" alt="{{ movie.title }}">
+                {% else %}
+                    <img class="card-img-top border" src="{{ tmdb_image_url(movie.poster_path,'w342')}}" alt="">
+                {% endif %}
+                </div>
                 <div class = "card-footer text-center border">
                     <a href = "{{ url_for('movie_details', movie_id = movie.id) }}" class = "btn btn-primary ">Show more</a>
                     <form method="POST" action="{{ url_for('add_to_favourites') }}" class="d-inline-flex">
@@ -41,8 +32,8 @@
                         </button>
                     </form>
                 </div>
-            </div>
         </div>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

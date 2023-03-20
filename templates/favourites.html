@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% block content %}
+<div class = "row my-5">
+    <div class="col-12 text-center">
+        <h2>List of your favourites movies and series</h2>
+    </div>
+</div>
+{% if lenght == 0 %}
+    <h3 class="text-center">Add some titles to your favourite's list</h3>
+{% else %}
+    {% for movie in movie_list %}
+        <div class = "row my-2">
+                <div class="col-2">
+                    <img class = "card-img-top border" src="{{ tmdb_image_url(movie.poster_path,'w185')}}" alt="">
+                </div>
+                <div class = "col-10">
+                    <div class ="card">
+                        <div class = "card-header bg-dark">
+                            <h4 class = "card-title text-light text-center">{{ movie.title }}</h4>
+                        </div>
+                        <div class = "card-body">
+                            <h3 class = "text-primary">{{ movie.tagline }}</h3>
+                            <p>{{ movie.overview }}</p>
+                            <a href = "{{ url_for('movie_details', movie_id = movie.id) }}" class = "btn btn-primary ">Show more</a>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+    {% endfor %}
+{% endif %}
+{% endblock %}

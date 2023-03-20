@@ -6,34 +6,39 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Biblioteka filmów</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     </head>    </head>
     <body>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="{{url_for('homepage')}}">Katalog filmów</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{url_for('homepage')}}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                <a class="navbar-brand" href="{{url_for('homepage')}}">Movies library</a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item mx-2">
+                        <a class="navbar-text text-info" href="{{url_for('movie_today')}}">Today's shows</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="navbar-text text-info" href="{{url_for('show_favourites')}}">Show favourites</a>
+                    </li>
+                </ul>
+                <form class="form-inline" action="/search" method="GET">
+                    <input class="form-control mr-sm-2" type="text" value="{% if search_query %}{{ search_query }}{% endif %}" placeholder="Search" aria-label="Search" name="q">
+                    <button class="btn btn-outline-info" type="submit">Search</button>
+                </form>
             </div>
         </nav>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info mt-3" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         <!-- Page content-->
         <div class="container">
             {% block content %}

@@ -1,38 +1,38 @@
 from flask import request
 from random import randrange, choice
 import requests
-API_TOKEN = 'api token'
+API_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMjY5NzQzNDdmOTFlNzQ2NWQ5YjViM2M3ZDVkM2ExMSIsInN1YiI6IjYzZjM0ZjA0YTI0YzUwMDA4MDBjYzYzNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QSwOJ5NE30GFESKOCx00kGxEHl5DFJ5EruMWHiAb65k'
 
-def get_popular_movies():
-    endpoint = 'https://api.themoviedb.org/3/movie/popular'
-    headers = {'Authorization': f'Bearer {API_TOKEN}'}
-    response = requests.get (endpoint, headers = headers)
+def call_tmdb_api(endpoint):
+    full_url = f'https://api.themoviedb.org/3/{endpoint}'
+    headers = {
+        "Authorization": f'Bearer {API_TOKEN}'
+    }
+    response = requests.get(full_url, headers = headers)
+    response.raise_for_status()
     return response.json()
 
 def get_single_movie(movie_id):
-    endpoint = f'https://api.themoviedb.org/3/movie/{movie_id}'
-    headers = {'Authorization': f'Bearer {API_TOKEN}'}
-    response = requests.get (endpoint, headers = headers)
-    return response.json()
+    return call_tmdb_api(f'movie/{movie_id}')
 
 def get_single_movie_cast(movie_id):
-    endpoint = f'https://api.themoviedb.org/3/movie/{movie_id}/credits'
-    headers = {'Authorization': f'Bearer {API_TOKEN}'}
-    response = requests.get (endpoint, headers = headers)
-    return response.json()["cast"]
+    response = call_tmdb_api(f'movie/{movie_id}/credits')
+    return response["cast"]   
 
 def get_single_movie_images(movie_id):
-    endpoint = f'https://api.themoviedb.org/3//movie/{movie_id}/images'
-    headers = {'Authorization': f'Bearer {API_TOKEN}'}
-    response = requests.get (endpoint, headers = headers )
-    return response.json()["backdrops"]
+    response = call_tmdb_api(f'/movie/{movie_id}/images?language=en,null')
+    return response["backdrops"]
 
 def get_movies_list(list_name = 'popular'):
-    endpoint = f'https://api.themoviedb.org/3/movie/{list_name}'
-    headers = {'Authorization': f'Bearer {API_TOKEN}'}
-    response = requests.get (endpoint, headers = headers)
-    response.raise_for_status()
-    return response.json()
+    return call_tmdb_api(f'movie/{list_name}')
+
+def get_wanted_movies(search_query):
+    response = call_tmdb_api(f'search/movie?query={search_query}')
+    return response['results']
+
+def get_today_tv():
+    response = call_tmdb_api(f'tv/airing_today?include_adult=false')
+    return response['results']
 
 def get_poster_url(poster_api_path, size = 'w342'):
     base_url = 'https://image.tmdb.org/t/p/' 
