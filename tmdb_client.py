@@ -1,7 +1,7 @@
 from flask import request
 from random import randrange, choice
-import requests
-API_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMjY5NzQzNDdmOTFlNzQ2NWQ5YjViM2M3ZDVkM2ExMSIsInN1YiI6IjYzZjM0ZjA0YTI0YzUwMDA4MDBjYzYzNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QSwOJ5NE30GFESKOCx00kGxEHl5DFJ5EruMWHiAb65k'
+import requests, os
+API_TOKEN = os.environ.get("TMDB_API_TOKEN", "")
 
 def call_tmdb_api(endpoint):
     full_url = f'https://api.themoviedb.org/3/{endpoint}'

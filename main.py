@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect,url_for, flash
 from datetime import datetime
-import tmdb_client
+import tmdb_client, os
 
 app = Flask(__name__)
-app.secret_key = b'secret'
+app.secret_key = os.environ.get("SECRET_KEY", "")
 
 FAVOURITES = []
 
